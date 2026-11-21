@@ -1,0 +1,48 @@
+# Bases de datos opcionales para desarrollo. Levantá solo la que uses:
+#   docker compose --profile mysql up -d
+#   docker compose --profile postgres up -d
+# Para detenerlas:  docker compose --profile mysql down   (agregá -v para borrar sus datos)
+# Si el puerto ya está ocupado, cambialo:  POSTGRES_PORT=5433 docker compose --profile postgres up -d
+# (y arrancá la aplicación con COWORKHUB_DB_PORT=5433).
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: coworkhub-mysql
+    profiles: ["mysql"]
+    environment:
+      MYSQL_DATABASE: coworkhub
+      MYSQL_USER: coworkhub
+      MYSQL_PASSWORD: coworkhub
+      MYSQL_ROOT_PASSWORD: root
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - coworkhub-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  postgres:
+    image: postgres:16
+    container_name: coworkhub-postgres
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_DB: coworkhub
+      POSTGRES_USER: coworkhub
+      POSTGRES_PASSWORD: coworkhub
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - coworkhub-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coworkhub -d coworkhub"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  coworkhub-mysql-data:
+  coworkhub-postgres-data:
