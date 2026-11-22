@@ -1,5 +1,6 @@
 package com.coworkhub.presentacion.excepcion;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
@@ -21,7 +22,8 @@ import com.coworkhub.negocio.excepcion.RecursoNoEncontradoException;
 import com.coworkhub.negocio.excepcion.ReglaNegocioException;
 import com.coworkhub.negocio.excepcion.SolicitudInvalidaException;
 import com.coworkhub.presentacion.dto.RespuestaError;
-
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 // Único lugar donde se traducen las excepciones a respuestas HTTP (RNF-05 y RNF-06).
 // Extiende ResponseEntityExceptionHandler para cubrir también los errores propios de Spring MVC
 // (JSON mal formado, parámetro faltante, ruta inexistente, método no permitido...).
@@ -32,6 +34,16 @@ public class ManejadorGlobalDeExcepciones extends ResponseEntityExceptionHandler
 
     // ---------------------------------------------------------------- nuestras excepciones
 
+    // Lo lanzan @PreAuthorize (RN-13) y el login: se traducen a 403 y 401 con el cuerpo estándar.
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<RespuestaError> manejarAccesoDenegado(AccessDeniedException ex) {
+        return responder(HttpStatus.FORBIDDEN, "ACCESO_DENEGADO", "No tenés permiso para realizar esta operación");
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<RespuestaError> manejarAutenticacion(AuthenticationException ex) {
+        return responder(HttpStatus.UNAUTHORIZED, "NO_AUTENTICADO", "Usuario o contraseña incorrectos");
+    }
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ResponseEntity<RespuestaError> manejarNoEncontrado(RecursoNoEncontradoException ex) {
         return responder(HttpStatus.NOT_FOUND, "NO_ENCONTRADO", ex.getMessage());

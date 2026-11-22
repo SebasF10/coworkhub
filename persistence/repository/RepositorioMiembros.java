@@ -31,4 +31,7 @@ public interface RepositorioMiembros extends JpaRepository<Miembro, Long> {
 
     // Busca al miembro dueño de un usuario: recorre la relación Miembro.usuario.nombreUsuario
     Optional<Miembro> findByUsuarioNombreUsuario(String nombreUsuario);
+
+    // ¿El miembro con este id es el dueño del usuario con este nombre? (RN-13)
+    boolean existsByIdAndUsuarioNombreUsuario(Long id, String nombreUsuario);
 }
