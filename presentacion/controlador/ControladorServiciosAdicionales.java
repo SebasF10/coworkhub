@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.coworkhub.presentacion.dto.SolicitudServicioAdicional;
 import com.coworkhub.negocio.model.ServicioAdicional;
 import com.coworkhub.negocio.service.ServicioServiciosAdicionales;
 
+@Tag(name = "Servicios adicionales", description = "Catálogo de servicios que se pueden agregar a una reserva")
 @RestController
 @RequestMapping("/api/servicios-adicionales")
 public class ControladorServiciosAdicionales {

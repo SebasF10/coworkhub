@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.coworkhub.presentacion.dto.SolicitudSala;
 import com.coworkhub.negocio.model.Sala;
 import com.coworkhub.negocio.service.ServicioSalas;
 
+@Tag(name = "Salas", description = "Catálogo de salas y su equipamiento")
 @RestController
 @RequestMapping("/api/salas")
 public class ControladorSalas {

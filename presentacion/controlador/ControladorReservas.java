@@ -1,5 +1,8 @@
 package com.coworkhub.presentacion.controlador;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,6 +23,7 @@ import com.coworkhub.negocio.model.EstadoReserva;
 import com.coworkhub.negocio.model.Reserva;
 import com.coworkhub.negocio.service.ServicioReservas;
 
+@Tag(name = "Reservas", description = "Crear, consultar, modificar y cancelar reservas")
 @RestController
 @RequestMapping("/api/reservas")
 public class ControladorReservas {
@@ -30,12 +34,15 @@ public class ControladorReservas {
         this.servicioReservas = servicioReservas;
     }
 
+    @Operation(summary = "Crear una reserva",
+            description = "Valida RN-01 a RN-06 y calcula el costo (RN-07). Responde 201 con el costo calculado.")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Reserva crear(@RequestBody SolicitudReserva solicitud) {
         return servicioReservas.crear(solicitud);
     }
 
+    @Operation(summary = "Consultar una reserva por id")
     @GetMapping("/{id}")
     public Reserva buscarPorId(@PathVariable Long id) {
         return servicioReservas.buscarPorId(id);
@@ -44,6 +51,8 @@ public class ControladorReservas {
     // GET /api/reservas?miembroId=1
     // GET /api/reservas?salaId=1&fecha=2030-06-04
     // GET /api/reservas?estado=PENDIENTE
+    @Operation(summary = "Listar reservas",
+            description = "Filtrar por miembroId, o por salaId junto con fecha (yyyy-MM-dd), o por estado.")
     @GetMapping
     public List<Reserva> listar(@RequestParam(required = false) Long miembroId,
                                 @RequestParam(required = false) Long salaId,
@@ -52,26 +61,34 @@ public class ControladorReservas {
         return servicioReservas.buscar(miembroId, salaId, fecha, estado);
     }
 
+    @Operation(summary = "Agregar un servicio adicional",
+            description = "Solo con la reserva PENDIENTE (RN-10). Si el servicio ya está, suma la cantidad. Recalcula el costo.")
     @PostMapping("/{id}/servicios")
     public Reserva agregarServicio(@PathVariable Long id, @RequestBody ItemServicio item) {
         return servicioReservas.agregarServicio(id, item);
     }
 
+    @Operation(summary = "Quitar un servicio adicional",
+            description = "Solo con la reserva PENDIENTE (RN-10). Recalcula el costo.")
     @DeleteMapping("/{id}/servicios/{servicioId}")
     public Reserva quitarServicio(@PathVariable Long id, @PathVariable Long servicioId) {
         return servicioReservas.quitarServicio(id, servicioId);
     }
 
+    @Operation(summary = "Confirmar una reserva", description = "PENDIENTE → CONFIRMADA (RN-09).")
     @PostMapping("/{id}/confirmar")
     public Reserva confirmar(@PathVariable Long id) {
         return servicioReservas.confirmar(id);
     }
 
+    @Operation(summary = "Cancelar una reserva",
+            description = "RN-08: 24 h o más sin cargo; entre 24 h y 2 h cargo del 50 %; con menos de 2 h no se puede.")
     @PostMapping("/{id}/cancelar")
     public Reserva cancelar(@PathVariable Long id) {
         return servicioReservas.cancelar(id);
     }
 
+    @Operation(summary = "Marcar una reserva como completada", description = "CONFIRMADA → COMPLETADA (RN-09).")
     @PostMapping("/{id}/completar")
     public Reserva completar(@PathVariable Long id) {
         return servicioReservas.completar(id);

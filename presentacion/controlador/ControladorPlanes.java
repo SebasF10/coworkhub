@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.coworkhub.presentacion.dto.SolicitudPlan;
 import com.coworkhub.negocio.model.PlanMembresia;
 import com.coworkhub.negocio.service.ServicioPlanes;
 
+@Tag(name = "Planes de membresía", description = "Catálogo de planes")
 @RestController
 @RequestMapping("/api/planes")
 public class ControladorPlanes {

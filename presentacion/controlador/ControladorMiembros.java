@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.coworkhub.presentacion.dto.ResumenConsumo;
 import com.coworkhub.presentacion.dto.SolicitudActualizarMiembro;
 import com.coworkhub.presentacion.dto.SolicitudMiembro;
@@ -23,6 +25,7 @@ import com.coworkhub.negocio.model.Miembro;
 import com.coworkhub.negocio.service.ServicioConsumo;
 import com.coworkhub.negocio.service.ServicioMiembros;
 
+@Tag(name = "Miembros", description = "Registro de miembros y resumen de consumo mensual")
 @RestController
 @RequestMapping("/api/miembros")
 public class ControladorMiembros {

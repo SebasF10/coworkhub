@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.coworkhub.negocio.model.Sala;
 import com.coworkhub.negocio.service.ServicioDisponibilidad;
 
+@Tag(name = "Disponibilidad", description = "Consulta de salas libres en un horario")
 @RestController
 @RequestMapping("/api/disponibilidad")
 public class ControladorDisponibilidad {
