@@ -40,6 +40,9 @@ public interface RepositorioReservas extends JpaRepository<Reserva, Long> {
 
     boolean existsByMiembroIdAndEstadoIn(Long miembroId, Collection<EstadoReserva> estados);
 
+    // ¿La reserva pertenece a un miembro cuyo usuario tiene este nombre? (RN-13)
+    boolean existsByIdAndMiembroUsuarioNombreUsuario(Long id, String nombreUsuario);
+
     // ¿Algún detalle de alguna reserva usa este servicio adicional?
     boolean existsByDetallesServicioId(Long servicioId);
 
