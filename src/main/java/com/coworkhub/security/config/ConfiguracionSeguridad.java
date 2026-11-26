@@ -45,9 +45,9 @@ public class ConfiguracionSeguridad {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(autorizacion -> autorizacion
-                        // Públicos: login y documentación
+                        // Públicos: login, salud del servicio (RF-15) y documentación
                         .requestMatchers("/", "/index.html", "/app.html", "/css/**", "/js/**",
-                                "/auth/login", "/doc/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                                "/auth/login", "/actuator/health", "/doc/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         // Catálogos: cualquier usuario autenticado los lee; solo ADMIN los modifica (RN-13)
                         .requestMatchers(HttpMethod.GET, CATALOGOS).authenticated()
                         .requestMatchers(CATALOGOS).hasRole("ADMIN")
