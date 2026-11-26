@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.coworkhub.negocio.model.Miembro;
+import com.coworkhub.negocio.model.EstadoMiembro;
 
 public interface RepositorioMiembros extends JpaRepository<Miembro, Long> {
 
@@ -14,6 +15,9 @@ public interface RepositorioMiembros extends JpaRepository<Miembro, Long> {
     @Override
     @EntityGraph(attributePaths = "plan")
     List<Miembro> findAll();
+
+    @EntityGraph(attributePaths = "plan")
+    List<Miembro> findByEstadoOrderByNombre(EstadoMiembro estado);
 
     @Override
     @EntityGraph(attributePaths = "plan")

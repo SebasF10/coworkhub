@@ -23,6 +23,7 @@ import com.coworkhub.presentacion.dto.ResumenConsumo;
 import com.coworkhub.presentacion.dto.SolicitudActualizarMiembro;
 import com.coworkhub.presentacion.dto.SolicitudMiembro;
 import com.coworkhub.negocio.model.Miembro;
+import com.coworkhub.negocio.model.EstadoMiembro;
 import com.coworkhub.security.config.Permisos;
 import com.coworkhub.negocio.service.ServicioConsumo;
 import com.coworkhub.negocio.service.ServicioMiembros;
@@ -42,8 +43,8 @@ public class ControladorMiembros {
 
     @GetMapping
     @PreAuthorize(Permisos.STAFF)
-    public List<Miembro> listarTodos() {
-        return servicioMiembros.listarTodos();
+    public List<Miembro> listarTodos(@RequestParam(required = false) EstadoMiembro estado) {
+        return servicioMiembros.listarTodos(estado);
     }
 
     @GetMapping("/{id}")

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoworkHub | Iniciar sesión</title><link rel="stylesheet" href="css/estilos.css">
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <div class="brand"><span class="brand-mark">C</span><div><strong>CoworkHub</strong><small>Gestión de espacios</small></div></div>
+    <h1>Iniciar sesión</h1><p class="muted">Accede con tu usuario para continuar.</p>
+    <form id="login-form">
+      <label>Usuario<input id="usuario" required autocomplete="username" placeholder="Ej. ana"></label>
+      <label>Contraseña<input id="contrasena" type="password" required autocomplete="current-password" placeholder="••••••••"></label>
+      <button class="button primary full" type="submit">Entrar</button><p id="login-error" class="error"></p>
+    </form>
+    <div class="demo-users">
+      <strong>Accesos de prueba — copia y pega</strong>
+      <span>ADMIN → usuario: <code>admin</code> | contraseña: <code>admin123</code></span>
+      <span>RECEPCIÓN → usuario: <code>recepcion</code> | contraseña: <code>recep123</code></span>
+      <span>MIEMBRO → usuario: <code>ana</code> | contraseña: <code>ana123</code></span>
+      <span>MIEMBRO → usuario: <code>luis</code> | contraseña: <code>luis123</code></span>
+    </div>
+  </main>
+  <script src="js/api.js"></script><script src="js/login.js"></script>
+</body>
+</html>

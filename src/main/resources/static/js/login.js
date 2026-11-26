@@ -1,0 +1,3 @@
+const loginForm=document.querySelector("#login-form");
+if(localStorage.getItem("token")) location.href="app.html";
+loginForm?.addEventListener("submit",async e=>{e.preventDefault();const error=document.querySelector("#login-error");error.textContent="";try{const datos=await api("/auth/login","POST",{nombreUsuario:document.querySelector("#usuario").value.trim(),contrasena:document.querySelector("#contrasena").value});localStorage.setItem("token",datos.token);localStorage.setItem("rol",datos.rol);localStorage.setItem("usuario",document.querySelector("#usuario").value.trim());location.href="app.html"}catch(err){error.textContent=err.message.includes("401")?"Usuario o contraseña incorrectos.":err.message}});

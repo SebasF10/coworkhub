@@ -46,8 +46,8 @@ public class ServicioMiembros {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Miembro> listarTodos() {
-        return repositorioMiembros.findAll();
+    public List<Miembro> listarTodos(EstadoMiembro estado) {
+        return estado == null ? repositorioMiembros.findAll() : repositorioMiembros.findByEstadoOrderByNombre(estado);
     }
 
     public Miembro buscarPorId(Long id) {

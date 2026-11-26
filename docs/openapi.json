@@ -1,0 +1,40 @@
+{
+  "openapi": "3.1.0",
+  "info": {"title": "CoWorkHub API", "version": "1.0", "description": "API de reservas de salas y espacios de trabajo."},
+  "servers": [{"url": "http://localhost:8080"}],
+  "security": [{"bearerAuth": []}],
+  "paths": {
+    "/auth/login": {"post": {"summary": "Iniciar sesión", "security": [], "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SolicitudLogin"}}}}, "responses": {"200": {"description": "JWT generado"}, "400": {"$ref": "#/components/responses/BadRequest"}, "401": {"$ref": "#/components/responses/Unauthorized"}}}},
+    "/api/sedes": {"get": {"summary": "Listar sedes", "responses": {"200": {"description": "Sedes"}}}, "post": {"summary": "Crear sede", "responses": {"201": {"description": "Creada"}, "400": {"$ref": "#/components/responses/BadRequest"}}}},
+    "/api/salas": {"get": {"summary": "Listar salas", "responses": {"200": {"description": "Salas"}}}, "post": {"summary": "Crear sala", "responses": {"201": {"description": "Creada"}}}},
+    "/api/equipamientos": {"get": {"summary": "Listar equipamientos", "responses": {"200": {"description": "Equipamientos"}}}, "post": {"summary": "Crear equipamiento", "responses": {"201": {"description": "Creado"}}}},
+    "/api/servicios-adicionales": {"get": {"summary": "Listar servicios", "responses": {"200": {"description": "Servicios"}}}, "post": {"summary": "Crear servicio", "responses": {"201": {"description": "Creado"}}}},
+    "/api/planes": {"get": {"summary": "Listar planes", "responses": {"200": {"description": "Planes"}}}, "post": {"summary": "Crear plan", "responses": {"201": {"description": "Creado"}}}},
+    "/api/miembros": {"get": {"summary": "Listar miembros", "parameters": [{"name": "estado", "in": "query", "schema": {"type": "string", "enum": ["ACTIVO", "SUSPENDIDO"]}}], "responses": {"200": {"description": "Miembros"}}}, "post": {"summary": "Crear miembro", "responses": {"201": {"description": "Creado"}}}},
+    "/api/miembros/{id}": {"get": {"summary": "Consultar miembro", "parameters": [{"$ref": "#/components/parameters/id"}], "responses": {"200": {"description": "Miembro"}, "403": {"$ref": "#/components/responses/Forbidden"}, "404": {"$ref": "#/components/responses/NotFound"}}}, "put": {"summary": "Actualizar miembro", "responses": {"200": {"description": "Actualizado"}}}, "delete": {"summary": "Eliminar miembro", "responses": {"204": {"description": "Eliminado"}, "409": {"$ref": "#/components/responses/Conflict"}}}},
+    "/api/miembros/{id}/consumo": {"get": {"summary": "Consultar consumo", "parameters": [{"$ref": "#/components/parameters/id"}, {"name": "mes", "in": "query", "schema": {"type": "string"}}], "responses": {"200": {"description": "Consumo"}}}},
+    "/api/disponibilidad": {"get": {"summary": "Consultar disponibilidad", "responses": {"200": {"description": "Salas disponibles"}, "400": {"$ref": "#/components/responses/BadRequest"}}}},
+    "/api/reservas": {"get": {"summary": "Listar reservas", "responses": {"200": {"description": "Reservas"}}}, "post": {"summary": "Crear reserva", "responses": {"201": {"description": "Creada"}, "409": {"$ref": "#/components/responses/Conflict"}}}},
+    "/api/reservas/{id}": {"get": {"summary": "Consultar reserva", "parameters": [{"$ref": "#/components/parameters/id"}], "responses": {"200": {"description": "Reserva"}, "403": {"$ref": "#/components/responses/Forbidden"}}}},
+    "/api/reservas/{id}/servicios": {"post": {"summary": "Agregar servicio", "responses": {"200": {"description": "Actualizada"}, "409": {"$ref": "#/components/responses/Conflict"}}}},
+    "/api/reservas/{id}/servicios/{servicioId}": {"delete": {"summary": "Quitar servicio", "responses": {"200": {"description": "Actualizada"}}}},
+    "/api/reservas/{id}/confirmar": {"post": {"summary": "Confirmar reserva", "responses": {"200": {"description": "Confirmada"}, "409": {"$ref": "#/components/responses/Conflict"}}}},
+    "/api/reservas/{id}/cancelar": {"post": {"summary": "Cancelar reserva", "responses": {"200": {"description": "Cancelada"}, "409": {"$ref": "#/components/responses/Conflict"}}}},
+    "/api/reservas/{id}/completar": {"post": {"summary": "Completar reserva", "responses": {"200": {"description": "Completada"}, "409": {"$ref": "#/components/responses/Conflict"}}}}
+  },
+  "components": {
+    "parameters": {"id": {"name": "id", "in": "path", "required": true, "schema": {"type": "integer", "format": "int64"}}},
+    "responses": {
+      "BadRequest": {"description": "Solicitud inválida", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RespuestaError"}}}},
+      "Unauthorized": {"description": "No autenticado", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RespuestaError"}}}},
+      "Forbidden": {"description": "Sin permiso", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RespuestaError"}}}},
+      "NotFound": {"description": "No encontrado", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RespuestaError"}}}},
+      "Conflict": {"description": "Regla de negocio", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RespuestaError"}}}}
+    },
+    "schemas": {
+      "SolicitudLogin": {"type": "object", "required": ["nombreUsuario", "contrasena"], "properties": {"nombreUsuario": {"type": "string"}, "contrasena": {"type": "string", "format": "password"}}},
+      "RespuestaError": {"type": "object", "properties": {"error": {"type": "string"}, "codigo": {"type": "string"}, "timestamp": {"type": "string", "format": "date-time"}}}
+    },
+    "securitySchemes": {"bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}}
+  }
+}
